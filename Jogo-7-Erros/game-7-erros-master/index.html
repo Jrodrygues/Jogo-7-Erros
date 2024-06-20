@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="assets/logo.png" type="image/png" />
+    <title>Jogo das Diferenças</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Jogo das Diferenças</h1>
+    <div id="timer">03:00</div>
+    <!-- Temporizador aqui -->
+    <div id="time-up-message" class="message">
+      Tempo esgotado! Tente novamente.
+    </div>
+    <div id="canvas-main" class="canvas">
+      <img id="imagem-esquerda" src="assets/imagem-esquerda.jpg" />
+    </div>
+    <div id="canvas-copy" class="canvas">
+      <img id="imagem-direita" src="assets/imagem-direita.jpg" />
+    </div>
+    <br />
+    <div id="game-message"></div>
+    <button id="btn-instrucoes">Instruções</button>
+    <input type="button" value="Jogar novamente" onclick="restartGame();" />
+    <input type="button" value="Próximo Jogo" onclick="proximoJogo();" />
+    <input type="button" id="toggle-mode" value="Modo Escuro" />
+
+    <div
+      div
+      class="instructions"
+      id="instructions-section"
+      style="display: none"
+    >
+      <h2>Instruções</h2>
+      <p>
+        Bem-vindo ao Jogo das Diferenças! Seu desafio é encontrar e clicar em
+        todas as diferenças entre as imagens apresentadas.
+      </p>
+      <p>Como jogar:</p>
+      <ul>
+        <li>
+          Clique na área onde você acha que há uma diferença entre as imagens.
+        </li>
+        <li>
+          Encontre e clique em todas as 7 diferenças para completar o jogo.
+        </li>
+        <li>Use o botão "Jogar Novamente" para reiniciar o jogo atual.</li>
+        <li>
+          Use o botão "Próximo Jogo" para avançar para o próximo conjunto de
+          imagens.
+        </li>
+      </ul>
+      <p>Dicas:</p>
+      <ul>
+        <li>
+          Observe atentamente todos os detalhes das imagens, incluindo formas,
+          cores e padrões.
+        </li>
+        <li>
+          Alguns erros podem ser pequenos e sutis, então explore cada parte da
+          imagem cuidadosamente.
+        </li>
+        <li>Use o cursor para marcar as diferenças quando encontrá-las.</li>
+      </ul>
+      <p>Divirta-se encontrando todas as diferenças e teste sua observação!</p>
+    </div>
+    <footer>
+      Desenvolvido por <strong>Jessé Rodrigues</strong> &copy; 2024
+    </footer>
+  </body>
+</html>
