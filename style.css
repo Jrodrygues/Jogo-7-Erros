@@ -267,15 +267,14 @@ footer {
   }
 }
 
-//.marker {
-//width: 40px; /* Largura do marcador */
-//height: 40px; /* Altura do marcador */
-//background-color: rgba(255, 0, 0, 0.7); /* Cor de fundo com transparência */
-//position: absolute;
-//border-radius: 50%; /* Bordas arredondadas para criar um círculo */
-//pointer-events: none; /* Evita que os marcadores recebam eventos de clique */
-//transform: translate(
-//  -50%,
-//  -50%
-//); /* Centraliza o marcador no ponto especificado */
-//}
+/* .marker {
+width: 40px; 
+height: 40px; 
+background-color: rgba(255, 0, 0, 0.7); 
+position: absolute;
+border-radius: 50%; 
+pointer-events: none; 
+transform: translate(
+  -50%,
+  -50%
+);} */
