@@ -2,7 +2,7 @@
 
 Este é um jogo interativo onde o objetivo é encontrar erros entre duas imagens aparentemente idênticas. Desenvolvido como parte de um projeto para demonstrar habilidades em desenvolvimento web utilizando HTML, CSS e JavaScript.
 
-![Screenshot do Jogo]([screenshots/Jogo-7-Erros/blob/main/7%20erros.jpg])
+![Screenshot do Jogo]([screenshots/JOGO-7-ERROS/7-erros.jpg])
 
 ## Como Jogar
 
