@@ -15,32 +15,31 @@ $(document).ready(function () {
     {
       imagens: ['assets/img-dir.jpg', 'assets/img-esq.jpg'],
       coordenadas: {
-        0: { x: 517, y: 95 },
-        1: { x: 254, y: 92 },
-        2: { x: 529, y: 253 },
-        3: { x: 346, y: 392 },
-        4: { x: 505, y: 420 },
-        5: { x: 776, y: 271 },
-        6: { x: 745, y: 359 }
+        0: { x: 539, y: 178 },
+        1: { x: 512, y: 241 },
+        2: { x: 340, y: 273 },
+        3: { x: 357, y: 154 },
+        4: { x: 350, y: 40 },
+        5: { x: 148, y: 33 },
+        6: { x: 210, y: 250 }
       }
     },
     {
       imagens: ['assets/img-esq1.jpg', 'assets/img-dir1.jpg'],
       coordenadas: {
-        0: { x: 580, y: 273 }, // Rabo do Cachorro
-        1: { x: 692, y: 215 }, // Topete Cachorro
-        2: { x: 779, y: 78 }, // Antena Borboleta
-        3: { x: 77, y: 430 }, // Fumaça
-        4: { x: 431, y: 300 }, // Cesta
-        5: { x: 257, y: 368 }, // Corrente
-        6: { x: 734, y: 85 } // Asa borboleta
+        0: { x: 559, y: 40 },
+        1: { x: 519, y: 49 },
+        2: { x: 496, y: 142 },
+        3: { x: 413, y: 181 },
+        4: { x: 302, y: 207 },
+        5: { x: 172, y: 255 },
+        6: { x: 42, y: 301 }
       }
     }
   ]
 
   var proximoJogoIndex = 0
   var jogo = new Game(novosJogos[proximoJogoIndex].coordenadas)
-
   var MAX_TENTATIVAS = 3 // Número máximo de tentativas permitidas
   var TEMPO_LIMITE_SEGUNDOS = 180 // Tempo limite em segundos
   var tentativas = 0 // Contador de tentativas
@@ -54,10 +53,10 @@ $(document).ready(function () {
     if (proximoJogoIndex >= novosJogos.length) {
       proximoJogoIndex = 0 // Volta ao início se atingir o final da lista
     }
-
     var novoJogo = novosJogos[proximoJogoIndex]
     $('#imagem-esquerda').attr('src', novoJogo.imagens[0])
     $('#imagem-direita').attr('src', novoJogo.imagens[1])
+
     jogo.vars.positions = novoJogo.coordenadas
 
     // Reinicia o jogo
@@ -65,11 +64,14 @@ $(document).ready(function () {
     temporizadorIniciado = false // Reseta a flag do temporizador
     tempoRestante = TEMPO_LIMITE_SEGUNDOS // Reinicia o tempo restante
     atualizarTempo() // Atualiza o display do temporizador
-    //$('#timer').text('03:00') // Reseta o temporizador
-
     // Esconde a mensagem de tempo esgotado, se estiver visível
     hideTimeUpMessage()
 
+    // Reinicia o contador de tentativas
+    tentativas = 0
+
+    // Desabilita o botão "Próximo Jogo" até que todos os erros sejam encontrados novamente
+    $('#btn-proximo-jogo').prop('disabled', true)
     // Habilita o botão de jogar novamente
     $('#btn-jogar-novamente').prop('disabled', true) // Desabilita o botão de jogar novamente
     $('#btn-iniciar').prop('disabled', false) // Habilita o botão de iniciar
@@ -79,8 +81,6 @@ $(document).ready(function () {
   // Função para reiniciar o jogo
   window.restartGame = function () {
     jogo.start() // Chama o método start() do objeto jogo
-    //temporizadorIniciado = false // Reseta a flag do temporizador
-    //$('#timer').text('03:00') // Reseta o temporizador
 
     // Reseta o temporizador
     clearInterval(timer) // Limpa o temporizador atual, se existir
@@ -90,8 +90,8 @@ $(document).ready(function () {
 
     // Esconde a mensagem de tempo esgotado, se estiver visível
     hideTimeUpMessage()
+    // Esconde a mensagem de tempo esgotado, se estiver visível
   }
-
   // Função para esconder a mensagem de tempo esgotado
   function hideTimeUpMessage() {
     $('#time-up-message').fadeOut() // Oculta a mensagem com efeito de fade-out
@@ -117,7 +117,7 @@ $(document).ready(function () {
           $('#btn-jogar-novamente').prop('disabled', false) // Habilita o botão de jogar novamente
           $('#btn-iniciar').prop('disabled', true) // Desabilita o botão de iniciar
           $('#btn-instrucoes').prop('disabled', true) // Desabilita o botão de instruções
-
+          bloquearJogo() // Bloqueia o jogo quando o tempo acaba
           // Lógica adicional de finalização do jogo aqui, se necessário
         }
       }, 1000)
@@ -153,14 +153,9 @@ $(document).ready(function () {
     }
   })
 
-  // Iniciar o temporizador ao clicar no botão "Iniciar"
-  $('#btn-iniciar').click(function () {
-    iniciarTemporizador()
-  })
-
   // Mostrar ou esconder instruções
   $('#btn-instrucoes').click(function () {
-    $('.instructions').toggle()
+    $('#popup').fadeIn() // Exibe o pop-up de instruções
   })
 
   // Função construtora do jogo
@@ -174,16 +169,13 @@ $(document).ready(function () {
       ended: false
     }
     $this.defaults = { radius: 50 }
-
     var $canvas_main = $('#canvas-main')
     var $canvas = $('.canvas')
     var positions = positions
-
     $this.init = function () {
       $this.createCanvas()
       $this.bindMouseEvents()
     }
-
     $this.start = function () {
       $this.vars.started = true
       $this.vars.ended = false
@@ -193,46 +185,38 @@ $(document).ready(function () {
       $.extend($this.vars.currentPositions, $this.vars.positions)
       $('#game-message').text('')
     }
-
     $this.createCanvas = function () {
       $canvas_main.on('mousemove', function (e) {
         var parentOffset = $(this).parent().offset()
         var relX = e.pageX - parentOffset.left
         var relY = e.pageY - parentOffset.top
-
         $('.cursor').css({
           left: relX,
           top: relY
         })
       })
-
       $canvas_main.on('mouseenter', function () {
         $('.cursor').addClass('visible')
       })
-
       $canvas_main.on('mouseleave', function () {
         $('.cursor').removeClass('visible')
       })
     }
-
     $this.bindMouseEvents = function () {
       $canvas_main.on('click', function (event) {
         if (!temporizadorIniciado) {
           iniciarTemporizador() // Iniciar o temporizador no primeiro clique
         }
-
         if ($this.vars.started && !$this.vars.ended) {
           $this.addMarker(event)
         }
       })
     }
-
     $this.addMarker = function (e) {
       if ($this.vars.markers < 7) {
         var parentOffset = $(e.target).parent().offset()
         var relX = e.pageX - parentOffset.left
         var relY = e.pageY - parentOffset.top
-
         $canvas_main.append(
           '<div class="marker" data-x="' +
             relX +
@@ -240,18 +224,15 @@ $(document).ready(function () {
             relY +
             '"></div>'
         )
-
         $('.marker:last-child').css({
           left: relX - $this.defaults.radius / 2,
           top: relY - $this.defaults.radius / 2
         })
-
         $this.vars.markers++
         if ($this.vars.markers === 7) {
           $this.vars.ended = true
           $this.verify()
         }
-
         return true
       } else {
         return false
@@ -271,6 +252,7 @@ $(document).ready(function () {
             Math.pow(markerPosition.x - position.x, 2) +
               Math.pow(markerPosition.y - position.y, 2)
           )
+
           if (distancia < $this.defaults.radius) {
             $marker.addClass('accept')
             delete $this.vars.currentPositions[index]
@@ -280,23 +262,26 @@ $(document).ready(function () {
         })
       })
 
-      console.log('Número de erros encontrados:', accepts) // Adicionando log de debug
-
       if (accepts === 7) {
         $('#game-message')
           .text('Parabéns! Você encontrou todos os erros!')
           .css('color', 'green')
         clearInterval(timer) // Para o temporizador quando o jogo é ganho
+
+        // Habilita o botão "Próximo Jogo"
+        $('#btn-proximo-jogo').prop('disabled', false)
         return true
       } else {
         $('#game-message')
           .text('Tente novamente! Você não encontrou todos os erros.')
           .css('color', 'red')
         clearInterval(timer) // Para o temporizador quando o jogo é ganho
+
+        // Desabilita o botão "Próximo Jogo" se não todos os erros foram encontrados
+        $('#btn-proximo-jogo').prop('disabled', true)
         return false
       }
     }
-
     $this.debug = function () {
       $.each($this.vars.positions, function (index, position) {
         $canvas_main.append('<div class="target"></div>')
@@ -306,35 +291,33 @@ $(document).ready(function () {
         })
       })
     }
-
     $this.init()
     $this.start()
-
     return $this
   }
-
   // Iniciar o jogo
   jogo.start()
+
+  // Mostrar ou esconder instruções
+  $('#btn-instrucoes').click(function () {
+    $('#popup').fadeIn() // Exibe o pop-up de instruções
+  })
+
+  // Fechar o pop-up ao clicar no botão de fechar
+  $('#close-popup, #close-popup-btn').click(function () {
+    $('#popup').fadeOut() // Fecha o pop-up
+  })
+
+  // Fechar o pop-up ao clicar fora do conteúdo
+  $(document).click(function (event) {
+    if (
+      $(event.target).closest('#popup').length === 0 &&
+      $(event.target).attr('id') !== 'btn-instrucoes'
+    ) {
+      $('#popup').fadeOut() // Fecha o pop-up se clicar fora dele e não for o botão de instruções
+    }
+  })
 })
 
 // Função para iniciar o jogo ao carregar a página
 window.proximoJogo() // Inicia o primeiro jogo automaticamente ao carregar a página
-
-var btnInstrucoes = document.getElementById('btn-instrucoes')
-var instructions = document.querySelector('.instructions')
-
-btnInstrucoes.addEventListener('click', function () {
-  if (instructions.style.display === 'block') {
-    instructions.style.display = 'none' // Oculta as instruções se estiverem visíveis
-  } else {
-    instructions.style.display = 'block' // Mostra as instruções se estiverem ocultas
-  }
-})
-
-// Oculta as instruções se clicar em qualquer área fora do menu de instruções
-document.addEventListener('click', function (event) {
-  var target = event.target
-  if (!instructions.contains(target) && target !== btnInstrucoes) {
-    instructions.style.display = 'none'
-  }
-})

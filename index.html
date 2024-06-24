@@ -2,39 +2,55 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" href="assets/" type="image/png" /> -->
     <title>Jogo das Diferenças</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <h1>Jogo das Diferenças</h1>
+
+    <!-- Botão de pop-out para instruções -->
+    <button id="btn-instrucoes" class="btn-instrucoes">Instruções</button>
+
+    <input type="button" value="Jogar novamente" onclick="restartGame();" />
+    <input
+      type="button"
+      id="btn-proximo-jogo"
+      value="Próximo Desafio"
+      onclick="proximoJogo();"
+    />
+    <input type="button" id="toggle-mode" value="Modo Escuro" />
+    <br />
     <div id="timer">03:00</div>
     <!-- Temporizador aqui -->
+    <div id="game-message"></div>
     <div id="time-up-message" class="message">
       Tempo esgotado! Tente novamente.
     </div>
     <div id="canvas-main" class="canvas">
-      <img id="imagem-esquerda" src="assets/imagem-esquerda.jpg" />
+      <img
+        id="imagem-esquerda"
+        class="imagem-esquerda"
+        src="assets/imagem-esquerda.jpg"
+      />
     </div>
     <div id="canvas-copy" class="canvas">
-      <img id="imagem-direita" src="assets/imagem-direita.jpg" />
+      <img
+        id="imagem-direita"
+        class="imagem-direita"
+        src="assets/imagem-direita.jpg"
+      />
     </div>
     <br />
-    <div id="game-message"></div>
-    <button id="btn-instrucoes">Instruções</button>
-    <input type="button" value="Jogar novamente" onclick="restartGame();" />
-    <input type="button" value="Próximo Jogo" onclick="proximoJogo();" />
-    <input type="button" id="toggle-mode" value="Modo Escuro" />
 
-    <div
-      div
-      class="instructions"
-      id="instructions-section"
-      style="display: none"
-    >
-      <h2>Instruções</h2>
+    <!-- Elemento Pop-up -->
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span id="close-popup" class="close-popup">&times;</span>
+        <div class="instructions">
+          <h2>Instruções</h2>
       <p>
         Bem-vindo ao Jogo das Diferenças! Seu desafio é encontrar e clicar em
         todas as diferenças entre as imagens apresentadas.
@@ -66,6 +82,10 @@
         <li>Use o cursor para marcar as diferenças quando encontrá-las.</li>
       </ul>
       <p>Divirta-se encontrando todas as diferenças e teste sua observação!</p>
+    </div>
+          <button id="close-popup-btn" class="close-popup-btn">Fechar</button>
+        </div>
+      </div>
     </div>
     <footer>
       Desenvolvido por <strong>Jessé Rodrigues</strong> &copy; 2024

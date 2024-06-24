@@ -15,17 +15,15 @@ body.light-mode {
   background-color: #f0f0f0;
   color: #333;
 }
-
 /* Estilos para o modo escuro */
 body.dark-mode {
   background-color: #333;
   color: #f0f0f0;
 }
-
 /* Estilos para o cabeçalho H1 */
 h1 {
   font-family: 'Arial', sans-serif;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
   color: #333;
@@ -35,12 +33,115 @@ h1 {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-
 /* Estilos para o temporizador */
 #timer {
-  font-size: 5rem;
+  text-align: center;
+  font-size: 2rem;
   font-weight: bold;
+  color: red;
+  background-color: #fff;
+  max-width: 100px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  margin: 10px auto;
+  padding: 10px 10px;
+  animation: pulse 1s infinite;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Estilos do Botão Pop-out */
+.btn-instrucoes {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-instrucoes:hover {
+  background-color: #005f6b;
+}
+
+/* Estilos do Pop-up */
+#popup {
+  display: none; /* Inicialmente oculto */
+  position: fixed; /* Define a posição fixa para que fique sobreposta */
+  top: 50%; /* Coloca o topo do popup na metade da altura da tela */
+  left: 50%; /* Coloca a esquerda do popup na metade da largura da tela */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Move o popup de volta 50% do seu próprio tamanho em ambas as direções */
+  z-index: 1000; /* Z-index para garantir que fique sobre outros elementos */
+}
+
+.popup-content {
+  position: relative;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  text-align: left;
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#popup-overlay {
+  display: none; /* Inicialmente oculto */
+  position: fixed; /* Define a posição fixa para cobrir a tela inteira */
+  top: 0; /* Coloca o topo no início da página */
+  left: 0; /* Coloca a esquerda no início da página */
+  width: 100%; /* Largura total */
+  height: 100%; /* Altura total */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido com transparência */
+  z-index: 999; /* Z-index inferior ao popup para que o popup fique acima */
+}
+
+.instructions {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.instructions h2 {
+  font-size: 24px;
   color: #333;
+}
+
+.instructions p,
+.instructions ul,
+.instructions li {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.close-popup-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.close-popup-btn:hover {
+  background-color: #005f6b;
 }
 
 .message {
@@ -51,11 +152,15 @@ h1 {
   animation: fadeIn 1s ease-in-out;
   display: none; /* Começa oculto */
 }
-
 .dark-mode .message {
   color: red; /* Ajusta a cor do texto para modo escuro, se necessário */
 }
 
+/* Estilos específicos para o modo escuro no temporizador */
+.dark-mode #timer {
+  background-color: #444;
+  color: red;
+}
 /* Estilos para os canvas das imagens */
 .canvas {
   display: inline-block;
@@ -63,15 +168,20 @@ h1 {
   cursor: url(cursor.png), auto;
   overflow: hidden;
   margin: 20px;
-  border: 2px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+/* Estilos para as imagens */
+.imagem-esquerda,
+.imagem-direita {
+  width: 100%; /* Largura total do contêiner pai */
+  height: auto; /* Altura automática para manter a proporção */
+  max-width: 650px; /* Tamanho máximo para largura */
+  max-height: 650px; /* Tamanho máximo para altura */
+  object-fit: contain; /* Ajusta a imagem dentro do contêiner sem cortar */
+}
 /* Estilos específicos para o modo claro nos canvas */
 body.light-mode .canvas {
   border-color: #ccc;
 }
-
 /* Estilos específicos para o modo escuro nos canvas */
 body.dark-mode .canvas {
   border-color: #555;
@@ -81,7 +191,7 @@ body.dark-mode .canvas {
 .marker {
   width: 50px;
   height: 50px;
-  background: gray;
+  background-color: rgba(255, 0, 0, 0.7);
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
@@ -93,12 +203,10 @@ body.dark-mode .canvas {
 .marker.accept {
   background: lightgreen;
 }
-
 /* Estilos para os marcadores rejeitados */
 .marker.reject {
   background: red;
 }
-
 /* Estilos para os alvos de diferenças */
 .target {
   width: 50px;
@@ -107,7 +215,6 @@ body.dark-mode .canvas {
   position: absolute;
   border-radius: 50%;
 }
-
 /* Estilos para o cursor personalizado */
 .cursor {
   position: absolute;
@@ -120,46 +227,15 @@ body.dark-mode .canvas {
   transition: opacity 0.2s linear;
   z-index: 2;
 }
-
 /* Estilos para tornar o cursor visível */
 .cursor.visible {
   opacity: 1;
 }
-
 /* Estilos para a mensagem de feedback do jogo */
 .message {
   font-size: 20px;
   margin: 20px 0;
   animation: fadeIn 1s ease-in-out;
-}
-
-/* Estilos para a seção de instruções */
-.instructions {
-  display: none; /* Inicialmente oculto */
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  margin: 10px auto;
-  padding: 30px 30px;
-  text-align: left;
-  margin-bottom: 100px; /* Adiciona margem na parte inferior */
-}
-
-/* Estilos para o título das instruções */
-.instructions h2 {
-  font-size: 24px;
-  color: #333;
-}
-
-/* Estilos para os parágrafos e listas nas instruções */
-.instructions p,
-.instructions ul,
-.instructions li {
-  font-size: 16px;
-  color: #333;
-  line-height: 1.5;
 }
 
 /* Estilos para botões de ação */
@@ -175,13 +251,11 @@ input[type='button'] {
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
-
 /* Estilos para botões de ação em hover */
 button:hover,
 input[type='button']:hover {
   background-color: #005f6b;
 }
-
 /* Estilos para o rodapé */
 footer {
   background-color: #333;
@@ -193,31 +267,37 @@ footer {
   width: 100%;
 }
 
-/* Estilos específicos para o modo escuro no temporizador */
-.dark-mode #timer {
-  color: #f0f0f0;
-}
-
 /* Estilos específicos para o modo escuro no cabeçalho H1 */
 .dark-mode h1 {
   color: #f0f0f0;
 }
-
 /* Estilos específicos para o modo escuro no rodapé */
 .dark-mode footer {
   background-color: #f0f0f0;
   color: #333;
 }
-
 /* Estilos específicos para o modo escuro nas instruções */
 .dark-mode .instructions h2,
 .dark-mode .instructions p,
 .dark-mode .instructions ul,
-.dark-mode .instructions li {
+.dark-mode .instructions li,
+.dark-mode footer {
   background-color: #f0f0f0;
   color: #333;
 }
 
+/* Animação de pulso para o temporizador */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 /* Animação de fade-in para a mensagem de feedback */
 @keyframes fadeIn {
   from {
@@ -227,7 +307,6 @@ footer {
     opacity: 1;
   }
 }
-
 /* Animação de bounce-in para os marcadores */
 @keyframes bounceIn {
   from {
@@ -237,44 +316,14 @@ footer {
     transform: scale(1);
   }
 }
-
 @media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
+  .imagem-esquerda,
+  .imagem-direita {
+    max-width: 100%;
+    max-height: 300px;
   }
-
-  .canvas {
-    width: 90%;
-    margin: 10px auto;
-  }
-
-  .instructions {
-    padding: 10px;
-  }
-
-  button,
-  input[type='button'] {
-    font-size: 0.875rem;
+  #timer {
+    font-size: 1.5rem;
     padding: 8px 16px;
   }
-
-  .message {
-    font-size: 1rem;
-  }
-
-  #timer {
-    font-size: 1.25rem;
-  }
 }
-
-/* .marker {
-width: 40px; 
-height: 40px; 
-background-color: rgba(255, 0, 0, 0.7); 
-position: absolute;
-border-radius: 50%; 
-pointer-events: none; 
-transform: translate(
-  -50%,
-  -50%
-);} */
